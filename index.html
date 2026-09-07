@@ -4,617 +4,161 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#4f46e5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
 <title>English Practice Coach</title>
 
 <style>
+:root{
+--bg:#f7f8fc;
+--card:#ffffff;
+--text:#1f2937;
+--muted:#6b7280;
+--line:#e5e7eb;
+--accent:#4f46e5;
+--soft:#eef2ff;
+--green:#dcfce7;
+--red:#fee2e2;
+}
+
+*{box-sizing:border-box}
+
 body{
 margin:0;
 font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-background:#f7f8fc;
-color:#1f2937;
+background:var(--bg);
+color:var(--text);
 }
 
 .app{
-max-width:700px;
+max-width:720px;
 margin:auto;
-padding:18px 14px 100px;
+padding:18px 14px 110px;
 }
 
-h1{margin-bottom:4px}
+h1{
+font-size:27px;
+margin:0;
+}
 
-.small{
-color:#6b7280;
+.subtitle{
 font-size:13px;
+color:var(--muted);
+margin-top:5px;
 }
 
 .card{
-background:white;
-border:1px solid #e5e7eb;
-border-radius:18px;
-padding:16px;
-margin:12px 0;
+background:var(--card);
+border:1px solid var(--line);
+border-radius:20px;
+padding:17px;
+margin:13px 0;
 }
 
-button{
-border:0;
-border-radius:14px;
-padding:12px 14px;
-font-weight:700;
-font-size:15px;
-}
-
-.primary{
-background:#4f46e5;
-color:white;
-}
-
-.secondary{
-background:#eef2ff;
-color:#4f46e5;
-}
-
-textarea,select{
-width:100%;
-box-sizing:border-box;
-border:1px solid #e5e7eb;
-border-radius:14px;
-padding:12px;
-font-size:16px;
-margin-top:10px;
-}
-
-textarea{
-min-height:100px;
-}
-
-.hidden{
-display:none;
-}
-
-.nav{
-position:fixed;
-left:0;
-right:0;
-bottom:0;
-background:white;
-border-top:1px solid #e5e7eb;
-padding:8px;
-}
-
-.nav-inner{
-max-width:700px;
-margin:auto;
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:4px;
-}
-
-.nav button{
-background:white;
-color:#6b7280;
-padding:8px 3px;
-font-size:11px;
-}
-
-.nav button.active{
-background:#eef2ff;
-color:#4f46e5;
-}
-
-.icon{
-display:block;
+h2{
+margin:0 0 10px;
 font-size:20px;
-margin-bottom:2px;
+}
+
+h3{
+margin:0 0 8px;
+}
+
+.small{
+font-size:13px;
+color:var(--muted);
+line-height:1.5;
 }
 
 .prompt{
 font-size:18px;
 font-weight:700;
-line-height:1.4;
+line-height:1.45;
+}
+
+button{
+border:0;
+border-radius:14px;
+padding:12px 15px;
+font-size:15px;
+font-weight:700;
+margin:3px 2px;
+}
+
+.primary{
+background:var(--accent);
+color:white;
+}
+
+.secondary{
+background:var(--soft);
+color:var(--accent);
+}
+
+.ghost{
+background:white;
+border:1px solid var(--line);
+color:var(--text);
+}
+
+textarea,
+select,
+input{
+font:inherit;
+}
+
+textarea,
+select{
+width:100%;
+border:1px solid var(--line);
+border-radius:14px;
+padding:12px;
+font-size:16px;
+margin-top:10px;
+background:white;
+}
+
+textarea{
+min-height:110px;
+}
+
+.hidden{
+display:none!important;
 }
 
 .result{
 margin-top:12px;
-padding:12px;
+padding:13px;
 border-radius:14px;
 background:#f3f4f6;
+line-height:1.5;
+}
+
+.correct{
+background:var(--green)!important;
+}
+
+.wrong{
+background:var(--red)!important;
 }
 
 .choice{
 width:100%;
+display:block;
 text-align:left;
 background:white;
-border:1px solid #e5e7eb;
-margin-top:8px;
+border:1px solid var(--line);
+margin:7px 0;
 }
 
-.correct{
-background:#dcfce7;
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+margin-top:14px;
 }
 
-.wrong{
-background:#fee2e2;
-}
-</style>
-</head>
-
-<body>
-
-<div class="app">
-
-<h1>English Practice Coach</h1>
-<div class="small">Speaking • Pronunciation • Grammar • Work English</div>
-
-<section id="home">
-
-<div class="card">
-<h2>Today's Practice</h2>
-
-<p>Spend around 15 minutes practicing English.</p>
-
-<p>
-1. Speak for 3 minutes<br>
-2. Practice pronunciation<br>
-3. Answer grammar questions<br>
-4. Practice a work conversation
-</p>
-
-<button class="primary" id="startPractice">
-Start Practice
-</button>
-
-</div>
-
-<div class="card">
-<h2>Confidence Tip</h2>
-
-<p>
-You do not need difficult English to sound professional.
-Use short sentences and pause between ideas.
-</p>
-
-</div>
-
-</section>
-
-<section id="speak" class="hidden">
-
-<div class="card">
-
-<h2>Speaking Practice</h2>
-
-<div id="speakPrompt" class="prompt">
-Tell me about yourself and your role at work.
-</div>
-
-<p class="small">
-Speak for 30–60 seconds.
-You can also use the microphone on your iPhone keyboard to dictate.
-</p>
-
-<button class="secondary" id="newSpeak">
-New Question
-</button>
-
-<button class="secondary" id="listenSpeak">
-🔊 Listen
-</button>
-
-<textarea id="speakAnswer"
-placeholder="Type or dictate your answer here..."></textarea>
-
-<button class="primary" id="checkSpeak">
-Coach My Answer
-</button>
-
-<div id="speakResult" class="result hidden"></div>
-
-</div>
-
-</section>
-
-<section id="pronounce" class="hidden">
-
-<div class="card">
-
-<h2>Pronunciation Practice</h2>
-
-<div id="pronText" class="prompt">
-Please review the outstanding items.
-</div>
-
-<p id="pronHint" class="small">
-Stress REVIEW and OUTSTANDING.
-</p>
-
-<button class="primary" id="listenPron">
-🔊 Listen
-</button>
-
-<button class="secondary" id="nextPron">
-Next Phrase
-</button>
-
-<div class="result">
-Listen once.<br>
-Say it slowly 3 times.<br>
-Then say it naturally 3 times.
-</div>
-
-</div>
-
-</section>
-
-<section id="grammar" class="hidden">
-
-<div class="card">
-
-<h2>Grammar Practice</h2>
-
-<div id="grammarQuestion" class="prompt"></div>
-
-<div id="grammarChoices"></div>
-
-<div id="grammarResult" class="result hidden"></div>
-
-<button class="secondary" id="nextGrammar">
-Next Question
-</button>
-
-</div>
-
-</section>
-
-<section id="work" class="hidden">
-
-<div class="card">
-
-<h2>Work English</h2>
-
-<select id="workType">
-
-<option value="ceo">
-Talking to the CEO
-</option>
-
-<option value="meeting">
-Giving a meeting update
-</option>
-
-<option value="cash">
-Explaining cash-flow concern
-</option>
-
-<option value="delay">
-Explaining delayed decisions
-</option>
-
-</select>
-
-<div id="workPrompt" class="prompt" style="margin-top:15px"></div>
-
-<textarea id="workAnswer"
-placeholder="Answer as if you are speaking in a meeting..."></textarea>
-
-<button class="primary" id="coachWork">
-Coach My Answer
-</button>
-
-<button class="secondary" id="showSample">
-Show Sample
-</button>
-
-<div id="workResult" class="result hidden"></div>
-
-</div>
-
-</section>
-
-</div>
-
-<div class="nav">
-
-<div class="nav-inner">
-
-<button class="active" data-page="home">
-<span class="icon">🏠</span>
-Home
-</button>
-
-<button data-page="speak">
-<span class="icon">🎤</span>
-Speak
-</button>
-
-<button data-page="pronounce">
-<span class="icon">🔊</span>
-Pronounce
-</button>
-
-<button data-page="grammar">
-<span class="icon">✍️</span>
-Grammar
-</button>
-
-<button data-page="work">
-<span class="icon">💼</span>
-Work
-</button>
-
-</div>
-
-</div>
-
-<script>
-const pages = ["home","speak","pronounce","grammar","work"];
-
-function showPage(page){
-pages.forEach(function(p){
-document.getElementById(p).classList.add("hidden");
-});
-
-document.getElementById(page).classList.remove("hidden");
-
-document.querySelectorAll(".nav button").forEach(function(button){
-button.classList.toggle("active", button.dataset.page === page);
-});
-
-window.scrollTo(0,0);
-}
-
-document.querySelectorAll(".nav button").forEach(function(button){
-button.addEventListener("click",function(){
-showPage(button.dataset.page);
-});
-});
-
-document.getElementById("startPractice").addEventListener("click",function(){
-showPage("speak");
-});
-
-const speakQuestions = [
-"Tell me about yourself and your role at work.",
-"What is one challenge you handled recently?",
-"What part of your job do you enjoy most?",
-"Explain one accounting process in simple English.",
-"What would you like to improve in your company?"
-];
-
-document.getElementById("newSpeak").addEventListener("click",function(){
-const question = speakQuestions[
-Math.floor(Math.random() * speakQuestions.length)
-];
-
-document.getElementById("speakPrompt").innerText = question;
-});
-
-function speakText(text){
-if("speechSynthesis" in window){
-speechSynthesis.cancel();
-
-const voice = new SpeechSynthesisUtterance(text);
-
-voice.lang = "en-US";
-voice.rate = 0.8;
-
-speechSynthesis.speak(voice);
-}
-}
-
-document.getElementById("listenSpeak").addEventListener("click",function(){
-speakText(document.getElementById("speakPrompt").innerText);
-});
-
-document.getElementById("checkSpeak").addEventListener("click",function(){
-
-const text = document.getElementById("speakAnswer").value.trim();
-const result = document.getElementById("speakResult");
-
-result.classList.remove("hidden");
-
-if(!text){
-result.innerText = "Type or dictate your answer first.";
-return;
-}
-
-let feedback = "Good practice. Your answer is understandable.";
-
-if(text.toLowerCase().includes("i am agree")){
-feedback += " Say 'I agree,' not 'I am agree.'";
-}
-
-if(text.toLowerCase().includes("discuss about")){
-feedback += " Say 'discuss the issue,' not 'discuss about the issue.'";
-}
-
-feedback += " Now read your answer aloud slowly.";
-
-result.innerText = feedback;
-});
-
-const pron = [
-[
-"Please review the outstanding items.",
-"Stress REVIEW and OUTSTANDING."
-],
-[
-"The payment has already been processed.",
-"Stress PAYMENT and PROCESSED."
-],
-[
-"We need to discuss the cash flow concern.",
-"Stress DISCUSS and CASH FLOW."
-],
-[
-"I would like to clarify the deadline.",
-"Stress CLAR in CLARIFY."
-],
-[
-"Management approval is still pending.",
-"Stress MANAGEMENT, APPROVAL and PENDING."
-]
-];
-
-let pronIndex = 0;
-
-function updatePron(){
-document.getElementById("pronText").innerText = pron[pronIndex][0];
-document.getElementById("pronHint").innerText = pron[pronIndex][1];
-}
-
-document.getElementById("listenPron").addEventListener("click",function(){
-speakText(pron[pronIndex][0]);
-});
-
-document.getElementById("nextPron").addEventListener("click",function(){
-pronIndex = (pronIndex + 1) % pron.length;
-updatePron();
-});
-
-const grammar = [
-{
-q:"Choose the correct sentence:",
-choices:[
-"I sent the report yesterday.",
-"I send the report yesterday.",
-"I have sent the report yesterday."
-],
-answer:0,
-explain:"Use simple past when the time is finished, such as yesterday."
-},
-{
-q:"Which sentence is correct?",
-choices:[
-"We discussed about the concern.",
-"We discussed the concern.",
-"We discuss regarding the concern."
-],
-answer:1,
-explain:"Discuss does not need the word about."
-},
-{
-q:"Choose the correct sentence:",
-choices:[
-"The expenses are higher than the collections.",
-"The expenses is higher than the collections.",
-"The expenses are more higher than the collections."
-],
-answer:0,
-explain:"Expenses is plural, so use are."
-}
-];
-
-let grammarIndex = 0;
-
-function renderGrammar(){
-
-const item = grammar[grammarIndex];
-
-document.getElementById("grammarQuestion").innerText = item.q;
-
-const container = document.getElementById("grammarChoices");
-
-container.innerHTML = "";
-
-document.getElementById("grammarResult").classList.add("hidden");
-
-item.choices.forEach(function(choice,index){
-
-const button = document.createElement("button");
-
-button.className = "choice";
-button.innerText = choice;
-
-button.addEventListener("click",function(){
-
-const result = document.getElementById("grammarResult");
-
-result.classList.remove("hidden");
-
-if(index === item.answer){
-button.classList.add("correct");
-result.innerHTML = "<b>Correct!</b><br>" + item.explain;
-}else{
-button.classList.add("wrong");
-result.innerHTML = "<b>Not quite.</b><br>" + item.explain;
-}
-
-});
-
-container.appendChild(button);
-
-});
-}
-
-document.getElementById("nextGrammar").addEventListener("click",function(){
-grammarIndex = (grammarIndex + 1) % grammar.length;
-renderGrammar();
-});
-
-const work = {
-
-ceo:{
-question:"The CEO asks: What is one concern management should address?",
-sample:"One concern I see is the delay in decisions when important issues are escalated. This can affect other departments. I think a clearer and faster approval process would help."
-},
-
-meeting:{
-question:"Give a short month-end accounting update.",
-sample:"The main accounting entries are completed. The aging and cash-flow reports are still ongoing. We are following up on the remaining items."
-},
-
-cash:{
-question:"Explain that cash outflows are higher than cash inflows.",
-sample:"At present, our cash outflows are higher than our cash inflows. Collections are not enough to cover all scheduled payments. We need to closely monitor collections and prioritize payments."
-},
-
-delay:{
-question:"Explain how delayed decisions affect the organization.",
-sample:"When important concerns are escalated but decisions are delayed, the issue can become bigger and affect other departments. A clear timeline for urgent decisions would help."
-}
-
-};
-
-function updateWork(){
-const type = document.getElementById("workType").value;
-
-document.getElementById("workPrompt").innerText = work[type].question;
-}
-
-document.getElementById("workType").addEventListener("change",updateWork);
-
-document.getElementById("showSample").addEventListener("click",function(){
-
-const type = document.getElementById("workType").value;
-const result = document.getElementById("workResult");
-
-result.classList.remove("hidden");
-
-result.innerHTML = "<b>Sample answer:</b><br>" + work[type].sample;
-});
-
-document.getElementById("coachWork").addEventListener("click",function(){
-
-const answer = document.getElementById("workAnswer").value.trim();
-const result = document.getElementById("workResult");
-
-result.classList.remove("hidden");
-
-if(!answer){
-result.innerText = "Write or dictate your answer first.";
-return;
-}
-
-result.innerHTML =
-"<b>Good practice.</b><br><br>" +
-"Use this speaking structure:<br>" +
-"<b>Situation → Impact → Recommendation</b><br><br>" +
-"Keep your sentences short and direct.";
-});
-
-renderGrammar();
-updateWork();
-</script>
-
-</body>
-</html>
+.stat{
+background:white;
+border:1px solid var(--line);
+border-radius:15
