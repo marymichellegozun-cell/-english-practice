@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#4f46e5">
 <title>English Practice Coach</title>
+
 <style>
 body{
 margin:0;
@@ -12,13 +13,20 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
 background:#f7f8fc;
 color:#1f2937;
 }
+
 .app{
 max-width:700px;
 margin:auto;
 padding:18px 14px 100px;
 }
+
 h1{margin-bottom:4px}
-.small{color:#6b7280;font-size:13px}
+
+.small{
+color:#6b7280;
+font-size:13px;
+}
+
 .card{
 background:white;
 border:1px solid #e5e7eb;
@@ -26,6 +34,7 @@ border-radius:18px;
 padding:16px;
 margin:12px 0;
 }
+
 button{
 border:0;
 border-radius:14px;
@@ -33,14 +42,17 @@ padding:12px 14px;
 font-weight:700;
 font-size:15px;
 }
+
 .primary{
 background:#4f46e5;
 color:white;
 }
+
 .secondary{
 background:#eef2ff;
 color:#4f46e5;
 }
+
 textarea,select{
 width:100%;
 box-sizing:border-box;
@@ -50,8 +62,15 @@ padding:12px;
 font-size:16px;
 margin-top:10px;
 }
-textarea{min-height:100px}
-.hidden{display:none}
+
+textarea{
+min-height:100px;
+}
+
+.hidden{
+display:none;
+}
+
 .nav{
 position:fixed;
 left:0;
@@ -61,6 +80,7 @@ background:white;
 border-top:1px solid #e5e7eb;
 padding:8px;
 }
+
 .nav-inner{
 max-width:700px;
 margin:auto;
@@ -68,32 +88,38 @@ display:grid;
 grid-template-columns:repeat(5,1fr);
 gap:4px;
 }
+
 .nav button{
 background:white;
 color:#6b7280;
 padding:8px 3px;
 font-size:11px;
 }
+
 .nav button.active{
 background:#eef2ff;
 color:#4f46e5;
 }
+
 .icon{
 display:block;
 font-size:20px;
 margin-bottom:2px;
 }
+
 .prompt{
 font-size:18px;
 font-weight:700;
 line-height:1.4;
 }
+
 .result{
 margin-top:12px;
 padding:12px;
 border-radius:14px;
 background:#f3f4f6;
 }
+
 .choice{
 width:100%;
 text-align:left;
@@ -101,8 +127,14 @@ background:white;
 border:1px solid #e5e7eb;
 margin-top:8px;
 }
-.correct{background:#dcfce7}
-.wrong{background:#fee2e2}
+
+.correct{
+background:#dcfce7;
+}
+
+.wrong{
+background:#fee2e2;
+}
 </style>
 </head>
 
@@ -117,24 +149,30 @@ margin-top:8px;
 
 <div class="card">
 <h2>Today's Practice</h2>
+
 <p>Spend around 15 minutes practicing English.</p>
+
 <p>
 1. Speak for 3 minutes<br>
 2. Practice pronunciation<br>
 3. Answer grammar questions<br>
 4. Practice a work conversation
 </p>
-<button class="primary" onclick="showPage('speak')">
+
+<button class="primary" id="startPractice">
 Start Practice
 </button>
+
 </div>
 
 <div class="card">
 <h2>Confidence Tip</h2>
+
 <p>
 You do not need difficult English to sound professional.
 Use short sentences and pause between ideas.
 </p>
+
 </div>
 
 </section>
@@ -142,6 +180,7 @@ Use short sentences and pause between ideas.
 <section id="speak" class="hidden">
 
 <div class="card">
+
 <h2>Speaking Practice</h2>
 
 <div id="speakPrompt" class="prompt">
@@ -153,24 +192,25 @@ Speak for 30–60 seconds.
 You can also use the microphone on your iPhone keyboard to dictate.
 </p>
 
-<button class="secondary" onclick="newSpeak()">
+<button class="secondary" id="newSpeak">
 New Question
 </button>
 
-<button class="secondary" onclick="listenSpeak()">
+<button class="secondary" id="listenSpeak">
 🔊 Listen
 </button>
 
 <textarea id="speakAnswer"
 placeholder="Type or dictate your answer here..."></textarea>
 
-<button class="primary" onclick="checkSpeak()">
+<button class="primary" id="checkSpeak">
 Coach My Answer
 </button>
 
 <div id="speakResult" class="result hidden"></div>
 
 </div>
+
 </section>
 
 <section id="pronounce" class="hidden">
@@ -187,11 +227,11 @@ Please review the outstanding items.
 Stress REVIEW and OUTSTANDING.
 </p>
 
-<button class="primary" onclick="listenPron()">
+<button class="primary" id="listenPron">
 🔊 Listen
 </button>
 
-<button class="secondary" onclick="nextPron()">
+<button class="secondary" id="nextPron">
 Next Phrase
 </button>
 
@@ -202,6 +242,7 @@ Then say it naturally 3 times.
 </div>
 
 </div>
+
 </section>
 
 <section id="grammar" class="hidden">
@@ -216,11 +257,12 @@ Then say it naturally 3 times.
 
 <div id="grammarResult" class="result hidden"></div>
 
-<button class="secondary" onclick="nextGrammar()">
+<button class="secondary" id="nextGrammar">
 Next Question
 </button>
 
 </div>
+
 </section>
 
 <section id="work" class="hidden">
@@ -229,7 +271,7 @@ Next Question
 
 <h2>Work English</h2>
 
-<select id="workType" onchange="updateWork()">
+<select id="workType">
 
 <option value="ceo">
 Talking to the CEO
@@ -254,17 +296,18 @@ Explaining delayed decisions
 <textarea id="workAnswer"
 placeholder="Answer as if you are speaking in a meeting..."></textarea>
 
-<button class="primary" onclick="coachWork()">
+<button class="primary" id="coachWork">
 Coach My Answer
 </button>
 
-<button class="secondary" onclick="showSample()">
+<button class="secondary" id="showSample">
 Show Sample
 </button>
 
 <div id="workResult" class="result hidden"></div>
 
 </div>
+
 </section>
 
 </div>
@@ -273,465 +316,304 @@ Show Sample
 
 <div class="nav-inner">
 
-<button class="active" onclick="showPage('home',this)">
+<button class="active" data-page="home">
 <span class="icon">🏠</span>
 Home
 </button>
 
-<button onclick="showPage('speak',this)">
+<button data-page="speak">
 <span class="icon">🎤</span>
 Speak
 </button>
 
-<button onclick="showPage('pronounce',this)">
+<button data-page="pronounce">
 <span class="icon">🔊</span>
 Pronounce
 </button>
 
-<button onclick="showPage('grammar',this)">
+<button data-page="grammar">
 <span class="icon">✍️</span>
 Grammar
 </button>
 
-<button onclick="showPage('work',this)">
+<button data-page="work">
 <span class="icon">💼</span>
 Work
 </button>
 
 </div>
+
 </div>
 
 <script>
+const pages = ["home","speak","pronounce","grammar","work"];
 
-const pages=[
-"home",
-"speak",
-"pronounce",
-"grammar",
-"work"
-];
-
-function showPage(page,button){
-
-pages.forEach(p=>{
+function showPage(page){
+pages.forEach(function(p){
 document.getElementById(p).classList.add("hidden");
 });
 
 document.getElementById(page).classList.remove("hidden");
 
-if(button){
-
-document.querySelectorAll(".nav button").forEach(b=>{
-b.classList.remove("active");
+document.querySelectorAll(".nav button").forEach(function(button){
+button.classList.toggle("active", button.dataset.page === page);
 });
 
-button.classList.add("active");
-
-}
-
 window.scrollTo(0,0);
-
 }
 
-const speakQuestions=[
+document.querySelectorAll(".nav button").forEach(function(button){
+button.addEventListener("click",function(){
+showPage(button.dataset.page);
+});
+});
 
+document.getElementById("startPractice").addEventListener("click",function(){
+showPage("speak");
+});
+
+const speakQuestions = [
 "Tell me about yourself and your role at work.",
-
 "What is one challenge you handled recently?",
-
 "What part of your job do you enjoy most?",
-
 "Explain one accounting process in simple English.",
-
 "What would you like to improve in your company?"
-
 ];
 
-function newSpeak(){
-
-const q=
-speakQuestions[
-Math.floor(
-Math.random()*speakQuestions.length
-)
+document.getElementById("newSpeak").addEventListener("click",function(){
+const question = speakQuestions[
+Math.floor(Math.random() * speakQuestions.length)
 ];
 
-document.getElementById("speakPrompt").innerText=q;
-
-}
+document.getElementById("speakPrompt").innerText = question;
+});
 
 function speakText(text){
-
 if("speechSynthesis" in window){
-
 speechSynthesis.cancel();
 
-const voice=
-new SpeechSynthesisUtterance(text);
+const voice = new SpeechSynthesisUtterance(text);
 
-voice.lang="en-US";
-
-voice.rate=.8;
+voice.lang = "en-US";
+voice.rate = 0.8;
 
 speechSynthesis.speak(voice);
-
+}
 }
 
-}
+document.getElementById("listenSpeak").addEventListener("click",function(){
+speakText(document.getElementById("speakPrompt").innerText);
+});
 
-function listenSpeak(){
+document.getElementById("checkSpeak").addEventListener("click",function(){
 
-speakText(
-document.getElementById("speakPrompt").innerText
-);
-
-}
-
-function checkSpeak(){
-
-const text=
-document.getElementById("speakAnswer").value.trim();
-
-const result=
-document.getElementById("speakResult");
+const text = document.getElementById("speakAnswer").value.trim();
+const result = document.getElementById("speakResult");
 
 result.classList.remove("hidden");
 
 if(!text){
-
-result.innerText=
-"Type or dictate your answer first.";
-
+result.innerText = "Type or dictate your answer first.";
 return;
-
 }
 
-let feedback=
-"Good practice. Your answer is understandable.";
+let feedback = "Good practice. Your answer is understandable.";
 
 if(text.toLowerCase().includes("i am agree")){
-
-feedback+=
-" Say “I agree,” not “I am agree.”";
-
+feedback += " Say 'I agree,' not 'I am agree.'";
 }
 
 if(text.toLowerCase().includes("discuss about")){
-
-feedback+=
-" Say “discuss the issue,” not “discuss about the issue.”";
-
+feedback += " Say 'discuss the issue,' not 'discuss about the issue.'";
 }
 
-feedback+=
-" Now read your answer aloud slowly.";
+feedback += " Now read your answer aloud slowly.";
 
-result.innerText=feedback;
+result.innerText = feedback;
+});
 
-}
-
-const pron=[
-
+const pron = [
 [
 "Please review the outstanding items.",
 "Stress REVIEW and OUTSTANDING."
 ],
-
 [
 "The payment has already been processed.",
 "Stress PAYMENT and PROCESSED."
 ],
-
 [
 "We need to discuss the cash flow concern.",
 "Stress DISCUSS and CASH FLOW."
 ],
-
 [
 "I would like to clarify the deadline.",
 "Stress CLAR in CLARIFY."
 ],
-
 [
 "Management approval is still pending.",
 "Stress MANAGEMENT, APPROVAL and PENDING."
 ]
-
 ];
 
-let pronIndex=0;
+let pronIndex = 0;
 
 function updatePron(){
-
-document.getElementById("pronText").innerText=
-pron[pronIndex][0];
-
-document.getElementById("pronHint").innerText=
-pron[pronIndex][1];
-
+document.getElementById("pronText").innerText = pron[pronIndex][0];
+document.getElementById("pronHint").innerText = pron[pronIndex][1];
 }
 
-function listenPron(){
+document.getElementById("listenPron").addEventListener("click",function(){
+speakText(pron[pronIndex][0]);
+});
 
-speakText(
-pron[pronIndex][0]
-);
-
-}
-
-function nextPron(){
-
-pronIndex=
-(pronIndex+1)%pron.length;
-
+document.getElementById("nextPron").addEventListener("click",function(){
+pronIndex = (pronIndex + 1) % pron.length;
 updatePron();
+});
 
-}
-
-const grammar=[
-
+const grammar = [
 {
-
 q:"Choose the correct sentence:",
-
 choices:[
-
 "I sent the report yesterday.",
-
 "I send the report yesterday.",
-
 "I have sent the report yesterday."
-
 ],
-
 answer:0,
-
-explain:
-"Use simple past when the time is finished, such as yesterday."
-
+explain:"Use simple past when the time is finished, such as yesterday."
 },
-
 {
-
 q:"Which sentence is correct?",
-
 choices:[
-
 "We discussed about the concern.",
-
 "We discussed the concern.",
-
 "We discuss regarding the concern."
-
 ],
-
 answer:1,
-
-explain:
-“Discuss” does not need “about.”
-
+explain:"Discuss does not need the word about."
 },
-
 {
-
 q:"Choose the correct sentence:",
-
 choices:[
-
 "The expenses are higher than the collections.",
-
 "The expenses is higher than the collections.",
-
 "The expenses are more higher than the collections."
-
 ],
-
 answer:0,
-
-explain:
-"Expenses is plural, so use “are.”"
-
+explain:"Expenses is plural, so use are."
 }
-
 ];
 
-let grammarIndex=0;
+let grammarIndex = 0;
 
 function renderGrammar(){
 
-const item=
-grammar[grammarIndex];
+const item = grammar[grammarIndex];
 
-document.getElementById("grammarQuestion").innerText=
-item.q;
+document.getElementById("grammarQuestion").innerText = item.q;
 
-const container=
-document.getElementById("grammarChoices");
+const container = document.getElementById("grammarChoices");
 
-container.innerHTML="";
+container.innerHTML = "";
 
-document.getElementById("grammarResult")
-.classList.add("hidden");
+document.getElementById("grammarResult").classList.add("hidden");
 
-item.choices.forEach((choice,index)=>{
+item.choices.forEach(function(choice,index){
 
-const button=
-document.createElement("button");
+const button = document.createElement("button");
 
-button.className="choice";
+button.className = "choice";
+button.innerText = choice;
 
-button.innerText=choice;
+button.addEventListener("click",function(){
 
-button.onclick=function(){
+const result = document.getElementById("grammarResult");
 
-checkGrammar(index,button);
+result.classList.remove("hidden");
 
-};
+if(index === item.answer){
+button.classList.add("correct");
+result.innerHTML = "<b>Correct!</b><br>" + item.explain;
+}else{
+button.classList.add("wrong");
+result.innerHTML = "<b>Not quite.</b><br>" + item.explain;
+}
+
+});
 
 container.appendChild(button);
 
 });
-
 }
 
-function checkGrammar(index,button){
-
-const item=
-grammar[grammarIndex];
-
-const result=
-document.getElementById("grammarResult");
-
-result.classList.remove("hidden");
-
-if(index===item.answer){
-
-button.classList.add("correct");
-
-result.innerHTML=
-"<b>Correct!</b><br>"+item.explain;
-
-}else{
-
-button.classList.add("wrong");
-
-result.innerHTML=
-"<b>Not quite.</b><br>"+item.explain;
-
-}
-
-}
-
-function nextGrammar(){
-
-grammarIndex=
-(grammarIndex+1)%grammar.length;
-
+document.getElementById("nextGrammar").addEventListener("click",function(){
+grammarIndex = (grammarIndex + 1) % grammar.length;
 renderGrammar();
+});
 
-}
-
-const work={
+const work = {
 
 ceo:{
-
-question:
-'The CEO asks: “What is one concern management should address?”',
-
-sample:
-"One concern I see is the delay in decisions when important issues are escalated. This can affect other departments. I think a clearer and faster approval process would help."
-
+question:"The CEO asks: What is one concern management should address?",
+sample:"One concern I see is the delay in decisions when important issues are escalated. This can affect other departments. I think a clearer and faster approval process would help."
 },
 
 meeting:{
-
-question:
-"Give a short month-end accounting update.",
-
-sample:
-"The main accounting entries are completed. The aging and cash-flow reports are still ongoing. We are following up on the remaining items."
-
+question:"Give a short month-end accounting update.",
+sample:"The main accounting entries are completed. The aging and cash-flow reports are still ongoing. We are following up on the remaining items."
 },
 
 cash:{
-
-question:
-"Explain that cash outflows are higher than cash inflows.",
-
-sample:
-"At present, our cash outflows are higher than our cash inflows. Collections are not enough to cover all scheduled payments. We need to closely monitor collections and prioritize payments."
-
+question:"Explain that cash outflows are higher than cash inflows.",
+sample:"At present, our cash outflows are higher than our cash inflows. Collections are not enough to cover all scheduled payments. We need to closely monitor collections and prioritize payments."
 },
 
 delay:{
-
-question:
-"Explain how delayed decisions affect the organization.",
-
-sample:
-"When important concerns are escalated but decisions are delayed, the issue can become bigger and affect other departments. A clear timeline for urgent decisions would help."
-
+question:"Explain how delayed decisions affect the organization.",
+sample:"When important concerns are escalated but decisions are delayed, the issue can become bigger and affect other departments. A clear timeline for urgent decisions would help."
 }
 
 };
 
 function updateWork(){
+const type = document.getElementById("workType").value;
 
-const type=
-document.getElementById("workType").value;
-
-document.getElementById("workPrompt").innerText=
-work[type].question;
-
+document.getElementById("workPrompt").innerText = work[type].question;
 }
 
-function showSample(){
+document.getElementById("workType").addEventListener("change",updateWork);
 
-const type=
-document.getElementById("workType").value;
+document.getElementById("showSample").addEventListener("click",function(){
 
-const result=
-document.getElementById("workResult");
+const type = document.getElementById("workType").value;
+const result = document.getElementById("workResult");
 
 result.classList.remove("hidden");
 
-result.innerHTML=
-"<b>Sample answer:</b><br>"+
-work[type].sample;
+result.innerHTML = "<b>Sample answer:</b><br>" + work[type].sample;
+});
 
-}
+document.getElementById("coachWork").addEventListener("click",function(){
 
-function coachWork(){
-
-const answer=
-document.getElementById("workAnswer").value.trim();
-
-const result=
-document.getElementById("workResult");
+const answer = document.getElementById("workAnswer").value.trim();
+const result = document.getElementById("workResult");
 
 result.classList.remove("hidden");
 
 if(!answer){
-
-result.innerText=
-"Write or dictate your answer first.";
-
+result.innerText = "Write or dictate your answer first.";
 return;
-
 }
 
-result.innerHTML=
-"<b>Good practice.</b><br><br>"+
-"Use this speaking structure:<br>"+
-"<b>Situation → Impact → Recommendation</b><br><br>"+
+result.innerHTML =
+"<b>Good practice.</b><br><br>" +
+"Use this speaking structure:<br>" +
+"<b>Situation → Impact → Recommendation</b><br><br>" +
 "Keep your sentences short and direct.";
-
-}
+});
 
 renderGrammar();
-
 updateWork();
-
 </script>
 
 </body>
